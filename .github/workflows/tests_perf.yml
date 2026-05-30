@@ -24,17 +24,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-#      - name: build runtime
-#        working-directory: runtime
-#        run: make
-
-      - name: build Lamac
-        working-directory: src
-        run: eval $(opam env --switch=lama --set-switch) && make
-
       - name: build truffle
         timeout-minutes: 10
-        run: mvn test && mvn package -Pnative
+        run: mvn package -Pnative
 
       - name: run perf tests
         timeout-minutes: 10

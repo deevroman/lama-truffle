@@ -1,16 +1,19 @@
-## Сборка 
+## JVM-сборка 
 
 ```bash
 mvn package
 ```
 
 ```bash
-MAVEN_OPTS="--enable-native-access=ALL-UNNAMED" mvn -q -pl launcher exec:java -Dexec.args="tests/regression/test001.lama"
+./sl  tests/regression/test007.lama
 ```
+[//]: # (```bash)
 
-```bash
-MAVEN_OPTS="--enable-native-access=ALL-UNNAMED -Xss128m -Xmx4g" mvn -q -pl launcher exec:java -Dexec.args="tests/performance/Sort.lama"
-```
+[//]: # (MAVEN_OPTS="--enable-native-access=ALL-UNNAMED -Xss128m -Xmx4g" mvn -q -pl launcher exec:java -Dexec.args="tests/performance/Sort.lama")
+
+[//]: # (```)
+
+## Сборка в нативный образ
 
 ```bash
 mvn package -Pnative
@@ -37,4 +40,3 @@ docker run --platform=linux/amd64 --rm -v $PWD:/lama -it -w /lama trickyfoxy/lam
 ```bash
 docker build --platform=linux/amd64 -t trickyfoxy/lama_truffle .
 ```
-
