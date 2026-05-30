@@ -1,0 +1,42 @@
+name: tests in docker
+on:
+  push:
+
+env:
+  OPAMROOT: /home/user/.opam
+  OPAMCONFIRMLEVEL: unsafe-yes
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    container:
+      image: trickyfoxy/lama_truffle
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - run: opam --version
+      - run: whoami
+      - run: opam exec -- ocamlopt --version
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: build runtime
+        working-directory: runtime
+        run: make
+
+      - name: build Lamac
+        working-directory: src
+        run: eval $(opam env --switch=lama --set-switch) && make
+
+      - name: build truffle
+        timeout-minutes: 10
+        run: mvn test && mvn package
+
+      - name: run regression tests
+        working-directory: tests
+        timeout-minutes: 10
+        run: ./run-regression-tests.sh
