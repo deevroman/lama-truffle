@@ -24,9 +24,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: build runtime
-        working-directory: runtime
-        run: make
+#      - name: build runtime
+#        working-directory: runtime
+#        run: make
 
       - name: build Lamac
         working-directory: src
