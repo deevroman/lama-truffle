@@ -30,4 +30,4 @@ jobs:
 
       - name: run perf tests
         timeout-minutes: 10
-        run: time ./lama tests/performance/Sort.lama
+        run: bash -c "time ./launcher/target/lama tests/performance/Sort.lama"

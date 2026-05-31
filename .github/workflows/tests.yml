@@ -29,6 +29,5 @@ jobs:
         run: mvn package
 
       - name: run regression tests
-        working-directory: tests
         timeout-minutes: 10
         run: ./run-regression-tests.sh

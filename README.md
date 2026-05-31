@@ -20,11 +20,11 @@ mvn package -Pnative
 ```
 
 ```bash
-./lama tests/regression/test001.lama
+./launcher/target/lama tests/regression/test001.lama
 ```
 
 ```bash
-./lama tests/performance/Sort.lama
+./launcher/target/lama tests/performance/Sort.lama
 ```
 
 ## Docker
