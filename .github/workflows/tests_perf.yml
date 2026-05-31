@@ -34,4 +34,4 @@ jobs:
 
       - name: run perf tests for lamac
         timeout-minutes: 10
-        run: lamac tests/performance/Sort.lama && bash -c "time ./Sort"
+        run: bash -c "lamac tests/performance/Sort.lama && time ./Sort"
