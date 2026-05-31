@@ -1,6 +1,7 @@
 package lama.truffle.ast;
 
 import com.oracle.truffle.api.frame.VirtualFrame;
+import com.oracle.truffle.api.nodes.ExplodeLoop;
 import com.oracle.truffle.api.nodes.IndirectCallNode;
 import lama.truffle.LamaException;
 import lama.truffle.runtime.LamaClosure;
@@ -21,6 +22,7 @@ public final class LamaCallNode extends LamaExpressionNode {
     }
 
     @Override
+    @ExplodeLoop
     public Object executeGeneric(VirtualFrame frame) {
         Object callable = callableNode.executeGeneric(frame);
         if (!(callable instanceof LamaClosure closure)) {

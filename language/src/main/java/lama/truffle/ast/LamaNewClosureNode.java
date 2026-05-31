@@ -1,6 +1,7 @@
 package lama.truffle.ast;
 
 import com.oracle.truffle.api.frame.VirtualFrame;
+import com.oracle.truffle.api.nodes.ExplodeLoop;
 import lama.truffle.runtime.LamaClosure;
 import lama.truffle.runtime.LamaFunction;
 
@@ -15,6 +16,7 @@ public final class LamaNewClosureNode extends LamaExpressionNode {
     }
 
     @Override
+    @ExplodeLoop
     public Object executeGeneric(VirtualFrame frame) {
         Object[] captures = new Object[captureNodes.length];
         for (int i = 0; i < captureNodes.length; i++) {

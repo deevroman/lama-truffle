@@ -1,6 +1,7 @@
 package lama.truffle.ast;
 
 import com.oracle.truffle.api.frame.VirtualFrame;
+import com.oracle.truffle.api.nodes.ExplodeLoop;
 import lama.truffle.runtime.LamaSexp;
 
 public final class LamaSexpNode extends LamaExpressionNode {
@@ -15,6 +16,7 @@ public final class LamaSexpNode extends LamaExpressionNode {
     }
 
     @Override
+    @ExplodeLoop
     public Object executeGeneric(VirtualFrame frame) {
         Object[] elements = new Object[elementNodes.length];
         for (int i = 0; i < elementNodes.length; i++) {

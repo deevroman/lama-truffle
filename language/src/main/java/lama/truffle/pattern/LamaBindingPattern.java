@@ -1,9 +1,11 @@
 package lama.truffle.pattern;
 
+import com.oracle.truffle.api.CompilerDirectives;
 import com.oracle.truffle.api.frame.VirtualFrame;
 
 public final class LamaBindingPattern implements LamaPattern {
     private final int slot;
+    @CompilerDirectives.CompilationFinal
     private final LamaPattern innerPattern;
 
     public LamaBindingPattern(int slot, LamaPattern innerPattern) {
