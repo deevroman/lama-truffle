@@ -1,3 +1,19 @@
+```bash
+git clone git@github.com:deevroman/lama-truffle.git && cd lama-truffle
+```
+
+На всякий случай есть Docker-образ с эталонным lamac и предустановленным GraalVM:
+
+```bash
+docker run --platform=linux/amd64 --rm -v $PWD:/lama -it -w /lama trickyfoxy/lama_truffle bash
+```
+
+Собирается он так:
+
+```bash
+docker build --platform=linux/amd64 -t trickyfoxy/lama_truffle .
+```
+
 ## Сборка в нативный образ
 
 ```bash
@@ -5,18 +21,16 @@ mvn package -Pnative
 ```
 
 ```bash
-./launcher/target/lama tests/regression/test001.lama
+echo 3 4 | ./launcher/target/lama tests/regression/test001.lama
 ```
 
 ```bash
 ./launcher/target/lama tests/performance/Sort.lama
 ```
 
-## JVM-сборка 
+В зависимости от системы может упасть со Stack Overflow. Должен помочь: `ulimit -s unlimited`
 
-```bash
-git clone git@github.com:deevroman/lama-truffle.git && cd lama-truffle
-```
+## JVM-сборка
 
 ```bash
 mvn package
@@ -36,20 +50,6 @@ mvn package
 
 ```bash
 JAVA_UNSAFE_MEMORY_ACCESS_ARG= ./run-regression-tests.sh
-```
-
-## Docker
-
-На всякий случай есть Docker-образ с эталонным lamac и GraalVM:
-
-```bash
-docker run --platform=linux/amd64 --rm -v $PWD:/lama -it -w /lama trickyfoxy/lama_truffle bash
-```
-
-Собирается он так:
-
-```bash
-docker build --platform=linux/amd64 -t trickyfoxy/lama_truffle .
 ```
 
 ## Замеры
