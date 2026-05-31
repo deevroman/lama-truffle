@@ -7,11 +7,18 @@ mvn package
 ```bash
 ./sl  tests/regression/test007.lama
 ```
-[//]: # (```bash)
 
-[//]: # (MAVEN_OPTS="--enable-native-access=ALL-UNNAMED -Xss128m -Xmx4g" mvn -q -pl launcher exec:java -Dexec.args="tests/performance/Sort.lama")
+Запуск всех тестов:
 
-[//]: # (```)
+```bash
+./run-regression-tests.sh
+```
+
+Если тесты упали из-за варнингов, то запускать то запускать так:
+
+```bash
+JAVA_UNSAFE_MEMORY_ACCESS_ARG= ./run-regression-tests.sh
+```
 
 ## Сборка в нативный образ
 

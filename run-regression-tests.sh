@@ -7,11 +7,10 @@ PROJECT_DIR="$SCRIPT_DIR"
 TESTS_DIR="$SCRIPT_DIR/tests/regression"
 LAMAC="$SCRIPT_DIR/../src/lamac"
 RUNTIME_DIR="$SCRIPT_DIR/../runtime"
-MAVEN_BIN=${MAVEN_BIN:-mvn}
 MAVEN_REPO_DIR=${MAVEN_REPO_DIR:-$SCRIPT_DIR/.m2/repository}
-JAVA_BIN=${JAVA_BIN:-java}
-JAVA_STACK_SIZE=${JAVA_STACK_SIZE:-8m}
-JAVA_ENABLE_NATIVE_ACCESS=${JAVA_ENABLE_NATIVE_ACCESS:-true}
+if [ "${JAVA_UNSAFE_MEMORY_ACCESS_ARG+x}" != x ]; then
+    JAVA_UNSAFE_MEMORY_ACCESS_ARG=--sun-misc-unsafe-memory-access=allow
+fi
 CLASSPATH_FILE="$SCRIPT_DIR/.launcher-classpath"
 
 if command -v timeout >/dev/null 2>&1; then
@@ -57,19 +56,12 @@ run_graal_test() {
 
     : >"$actual_output"
 
-    local java_args=(
-        "-Xss$JAVA_STACK_SIZE"
-#        "--sun-misc-unsafe-memory-access=allow"
-        -cp "$GRAAL_LAUNCHER_CLASSPATH"
-    )
-
-    if [ "$JAVA_ENABLE_NATIVE_ACCESS" = "true" ]; then
-        java_args=(--enable-native-access=ALL-UNNAMED "${java_args[@]}")
-    fi
-
     run_with_timeout 30 \
-        "$JAVA_BIN" \
-        "${java_args[@]}" \
+        java \
+        "-Xss8m" \
+        ${JAVA_UNSAFE_MEMORY_ACCESS_ARG:+"$JAVA_UNSAFE_MEMORY_ACCESS_ARG"} \
+        -cp "$GRAAL_LAUNCHER_CLASSPATH" \
+        --enable-native-access=ALL-UNNAMED \
         lama.truffle.launcher.LamaMain \
         "$testfile" \
         <"$test_input" \
@@ -78,13 +70,13 @@ run_graal_test() {
 
 echo "Building Truffle launcher..."
 mkdir -p "$MAVEN_REPO_DIR"
-if ! "$MAVEN_BIN" -q -Dmaven.repo.local="$MAVEN_REPO_DIR" -DskipTests install -f "$PROJECT_DIR/pom.xml"; then
+if ! mvn -q -Dmaven.repo.local="$MAVEN_REPO_DIR" -DskipTests install -f "$PROJECT_DIR/pom.xml"; then
     echo "failed to build Truffle project" >&2
     exit 1
 fi
 
 echo "Resolving launcher classpath..."
-if ! "$MAVEN_BIN" \
+if ! mvn \
     -q \
     -Dmaven.repo.local="$MAVEN_REPO_DIR" \
     -f "$PROJECT_DIR/launcher/pom.xml" \

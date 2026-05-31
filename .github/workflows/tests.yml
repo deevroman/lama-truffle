@@ -30,4 +30,4 @@ jobs:
 
       - name: run regression tests
         timeout-minutes: 10
-        run: ./run-regression-tests.sh
+        run: JAVA_UNSAFE_MEMORY_ACCESS_ARG= ./run-regression-tests.sh
